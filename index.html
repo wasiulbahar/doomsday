@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Doomsday · Finals 3.2</title>
+<meta name="description" content="Final exam countdown, routine, syllabus, books and notes for 3.2 in one place.">
+<link rel="icon" href="https://wasiulbahar.com/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:#f7f2e6; --paper-2:#efe7d3; --card:#fffdf7; --ink:#141714; --ink-2:#444a44; --line:#141714; --shade:#141714;
+  --green:#006a4e; --green-2:#00553e; --on-green:#fff; --red:#d42a33; --on-red:#fff; --dark:#0f1a15; --on-dark:#f3eee2; --on-dark-2:#b8bdb2; --yellow:#ffd23f;
+  --font:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif; --max:1180px; --gutter:clamp(16px,3.5vw,40px);
+  --r:14px; --bw:2.5px; --ease:cubic-bezier(.2,.7,.1,1); color-scheme:light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper:#111613; --paper-2:#18201b; --card:#1a231e; --ink:#f1ece0; --ink-2:#bdbfb4; --line:#f1ece0; --shade:#000; --green:#0f7d58; --green-2:#12906a; --dark:#070b09; color-scheme:dark; } }
+:root[data-theme="dark"] { --paper:#111613; --paper-2:#18201b; --card:#1a231e; --ink:#f1ece0; --ink-2:#bdbfb4; --line:#f1ece0; --shade:#000; --green:#0f7d58; --green-2:#12906a; --dark:#070b09; color-scheme:dark; }
+
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.55 var(--font);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit} h1,h2,h3,p,ul,ol{margin:0} ul,ol{padding:0;list-style:none}
+h1,h2,h3{font-weight:800;letter-spacing:-.035em;line-height:1.02}
+:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+[hidden]{display:none!important}
+.mark{display:inline-block;background:var(--green);color:var(--on-green);padding:0 .16em .04em;border:var(--bw) solid var(--line);border-radius:6px;box-shadow:4px 4px 0 var(--shade);transform:rotate(-1.2deg)}
+.mark.red{background:var(--red);color:var(--on-red);transform:rotate(1deg)}
+.mark.yel{background:var(--yellow);color:#141714}
+.card{background:var(--card);border:var(--bw) solid var(--line);border-radius:var(--r);box-shadow:5px 5px 0 var(--shade)}
+.chip{display:inline-block;font-size:.8rem;font-weight:700;padding:3px 11px;border:2px solid var(--line);border-radius:999px;background:var(--paper)}
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 22px;background:var(--green);color:var(--on-green);border:var(--bw) solid var(--line);border-radius:12px;box-shadow:4px 4px 0 var(--shade);font:700 1.0625rem/1 var(--font);text-decoration:none;cursor:pointer;transition:transform .18s var(--ease),box-shadow .18s var(--ease)}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--shade)}
+.btn:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--shade)}
+.btn.ghost{background:var(--card);color:var(--ink)} .btn.red{background:var(--red)} .btn.yel{background:var(--yellow);color:#141714}
+.btn.small{min-height:40px;padding:0 14px;font-size:.95rem;box-shadow:3px 3px 0 var(--shade)}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:var(--bw) solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:12px;height:66px}
+.brand{text-decoration:none;display:flex;align-items:center;gap:10px;line-height:1.1}
+.brand img{width:38px;height:38px}
+.brand b{font-size:1.15rem;letter-spacing:-.02em;display:block}
+.brand span{font-size:.8rem;color:var(--ink-2)}
+.icon-btn{display:grid;place-items:center;width:42px;height:42px;border:var(--bw) solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);cursor:pointer}
+
+/* hero / countdown */
+.hero{padding:clamp(40px,7vw,88px) 0 clamp(48px,7vw,96px);background:var(--dark);color:var(--on-dark);--line:#000;--shade:#000;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:auto -10% -60% auto;width:60vw;height:60vw;border-radius:50%;background:radial-gradient(circle,rgba(212,42,51,.35),transparent 65%);pointer-events:none}
+.kick{font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.8rem;color:var(--on-dark-2)}
+.hero h1{font-size:clamp(2.4rem,1.2rem + 5vw,5.4rem);margin:14px 0 6px}
+.hero .when{font-size:clamp(1.1rem,1rem + .6vw,1.45rem);color:var(--on-dark-2)}
+.clock{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,2vw,22px);margin:clamp(28px,4vw,44px) 0 28px;max-width:860px;position:relative;z-index:1}
+.unit{background:var(--card);color:var(--ink);border:var(--bw) solid #000;border-radius:var(--r);box-shadow:6px 6px 0 #000;text-align:center;padding:clamp(10px,2vw,22px) 4px clamp(8px,1.4vw,14px);overflow:hidden}
+.unit:first-child{background:var(--red);color:#fff}
+.num{display:block;font-size:clamp(2.4rem,1rem + 7vw,6.2rem);font-weight:800;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums}
+.num.tick{animation:tick .35s var(--ease)}
+@keyframes tick{from{transform:translateY(-40%);opacity:0}to{transform:none;opacity:1}}
+.unit small{display:block;font-weight:700;font-size:clamp(.7rem,.6rem + .4vw,.95rem);text-transform:uppercase;letter-spacing:.1em;margin-top:4px;opacity:.75}
+.hero .intro{max-width:44ch;color:var(--on-dark)}
+.nextup{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 24px;max-width:860px;margin:30px 0 28px;padding:16px 18px;text-decoration:none;color:var(--ink);box-shadow:6px 6px 0 #000;border-color:#000;position:relative;z-index:1;transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+a.nextup:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 #000}
+.nu-txt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.nu-txt .kick{color:var(--red)}
+.nu-txt b{font-size:clamp(1.2rem,1rem + 1vw,1.6rem);letter-spacing:-.02em;line-height:1.15}
+.nu-when{color:var(--ink-2);font-weight:600;font-size:.95rem}
+.clock.small{margin:0;gap:8px;max-width:none}
+.clock.small .unit{padding:6px 10px;min-width:62px;box-shadow:3px 3px 0 #000;border-width:2px}
+.clock.small .num{font-size:1.9rem}
+.clock.small small{font-size:.62rem}
+.survive{max-width:860px;position:relative;z-index:1}
+.survive .lbl{display:flex;justify-content:space-between;font-weight:700;font-size:.95rem;margin-bottom:8px}
+.bar{height:22px;border:var(--bw) solid #000;border-radius:999px;background:#1d2a23;overflow:hidden;box-shadow:4px 4px 0 #000}
+.bar i{display:block;height:100%;background:repeating-linear-gradient(-45deg,var(--yellow) 0 12px,#f2c21f 12px 24px);border-right:var(--bw) solid #000;transition:width 1s var(--ease)}
+.hero .cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px;position:relative;z-index:1}
+
+/* routine */
+.band{padding:clamp(56px,8vw,110px) 0}
+.band.tint{background:var(--paper-2)}
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px 40px;margin-bottom:clamp(28px,4vw,48px)}
+.head h2{font-size:clamp(2.2rem,1.4rem + 3.5vw,4.2rem)}
+.head p{max-width:38ch;font-size:1.15rem;color:var(--ink-2)}
+.cal{display:flex;gap:6px;overflow-x:auto;padding:4px 6px 14px;margin:0 -6px 30px;scrollbar-width:thin}
+.day{flex:none;width:46px;text-align:center;border:2px solid var(--line);border-radius:10px;padding:5px 0;background:var(--card);font-size:.72rem;font-weight:700;line-height:1.2;text-decoration:none}
+.day b{display:block;font-size:1.15rem}
+.day.ex{background:var(--green);color:#fff;box-shadow:3px 3px 0 var(--shade);transform:translateY(-3px)}
+.day.ex.next{background:var(--red)}
+.day.today{outline:3px dashed var(--red);outline-offset:2px}
+.day.past{opacity:.45}
+.track{display:grid;gap:0}
+.exam{display:grid;grid-template-columns:120px 1fr auto;align-items:center;gap:22px;padding:20px 22px;text-decoration:none;color:var(--ink);transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+.exam:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--shade)}
+.date{border:var(--bw) solid var(--line);border-radius:12px;text-align:center;overflow:hidden;background:var(--paper)}
+.date .m{background:var(--c,var(--green));color:#fff;font-weight:800;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;padding:3px 0;border-bottom:var(--bw) solid var(--line)}
+.date .d{font-size:2.6rem;font-weight:800;letter-spacing:-.05em;line-height:1.1}
+.date .w{font-size:.8rem;font-weight:700;padding-bottom:6px;color:var(--ink-2)}
+.exam h3{font-size:clamp(1.35rem,1.1rem + 1vw,2rem)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 10px;margin-top:10px;align-items:center}
+.go{width:52px;height:52px;border-radius:50%;border:var(--bw) solid var(--line);display:grid;place-items:center;background:var(--yellow);color:#141714;font-size:1.4rem;font-weight:800;transition:transform .25s var(--ease)}
+.exam:hover .go{transform:rotate(-45deg)}
+.exam.next{background:var(--card);outline:4px solid var(--red);outline-offset:4px}
+.exam.done{opacity:.55;filter:grayscale(.6)}
+.gap{display:flex;align-items:center;gap:12px;padding:6px 0 6px 58px;font-weight:700;font-size:.92rem;color:var(--ink-2)}
+.gap::before{content:"";width:var(--bw);height:38px;background:repeating-linear-gradient(var(--line) 0 6px,transparent 6px 11px)}
+.gap.tight span{background:var(--red);color:#fff;border-color:var(--line)}
+.gap.easy span{background:var(--green);color:#fff}
+
+/* detail */
+.dhero{padding:clamp(36px,6vw,80px) 0 clamp(40px,6vw,72px);background:var(--c,var(--green));color:#fff;--line:#000;--shade:#000;border-bottom:var(--bw) solid var(--ink)}
+.back{display:inline-flex;align-items:center;gap:8px;font-weight:700;text-decoration:none;border:2px solid #000;background:var(--card);color:var(--ink);padding:6px 14px;border-radius:999px;box-shadow:3px 3px 0 #000}
+.dhero h1{font-size:clamp(2.2rem,1.1rem + 5vw,5rem);margin:22px 0 14px;max-width:18ch}
+.dhero h1 a{text-decoration:none;background-image:linear-gradient(currentColor,currentColor);background-size:0 4px;background-position:0 100%;background-repeat:no-repeat;transition:background-size .35s var(--ease)}
+.dhero h1 a:hover{background-size:100% 4px}
+.dhero h1 a::after{content:" ↗";font-size:.5em;vertical-align:super}
+.facts{display:flex;flex-wrap:wrap;gap:12px}
+.fact{background:var(--card);color:var(--ink);border:var(--bw) solid #000;border-radius:12px;box-shadow:4px 4px 0 #000;padding:10px 16px;font-weight:700}
+.fact small{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.mini{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.mini .unit{padding:8px 14px;min-width:78px;box-shadow:4px 4px 0 #000}
+.mini .unit:first-child{background:var(--yellow);color:#141714}
+.mini .num{font-size:2.2rem}
+.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:28px;align-items:start}
+.res{display:grid;gap:14px;position:sticky;top:90px}
+.res .btn{justify-content:space-between;min-height:64px;font-size:1.15rem}
+.syl{padding:clamp(18px,3vw,30px)}
+.syl-top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}
+.syl-top h2{font-size:clamp(1.6rem,1.2rem + 1.5vw,2.4rem)}
+.ring{--p:0;width:74px;height:74px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:800;border:var(--bw) solid var(--line);background:conic-gradient(var(--green) calc(var(--p)*1%),var(--paper-2) 0)}
+.ring b{background:var(--card);width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:.95rem;border:2px solid var(--line)}
+.ch{display:flex;gap:14px;align-items:center;padding:12px 6px;border-top:2px dashed color-mix(in srgb,var(--line) 30%,transparent);cursor:pointer;user-select:none}
+.ch input{appearance:none;width:26px;height:26px;flex:none;border:var(--bw) solid var(--line);border-radius:7px;background:var(--paper);display:grid;place-items:center;cursor:pointer;transition:background .2s}
+.ch input:checked{background:var(--green)}
+.ch input:checked::after{content:"✓";color:#fff;font-weight:800}
+.ch a.bk{text-decoration:none;background:var(--yellow);color:#141714;box-shadow:2px 2px 0 var(--shade)}
+.ch a.bk:hover{transform:translate(-1px,-1px)}
+.ch a.t{text-decoration:none;font-weight:600}
+.ch a.t:hover{color:var(--green);text-decoration:underline;text-underline-offset:4px}
+.pdf{font-size:.68rem;font-weight:800;border:2px solid currentColor;border-radius:6px;padding:0 5px;margin-left:4px;vertical-align:2px;color:var(--red)}
+.btn.off{opacity:.5;cursor:not-allowed;box-shadow:none;justify-content:space-between}
+.btn.off:hover{transform:none}
+#viewer{width:min(1000px,96vw);height:min(92vh,1100px);padding:0;overflow:hidden;color:var(--ink)}
+#viewer[open]{display:flex;flex-direction:column}
+#viewer::backdrop{background:rgba(10,15,12,.7)}
+.vbar{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:var(--bw) solid var(--line)}
+.vbar h3{flex:1;font-size:1.05rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#viewer iframe{flex:1;border:0;width:100%;background:#fff}
+.ch .bk{flex:none;font-size:.75rem;font-weight:800;border:2px solid var(--line);border-radius:8px;padding:2px 7px;background:var(--paper-2);min-width:52px;text-align:center}
+.ch:has(input:checked) .t{text-decoration:line-through;text-decoration-thickness:2px;color:var(--ink-2)}
+.sub{font-weight:800;text-transform:uppercase;letter-spacing:.1em;font-size:.8rem;margin:18px 0 4px;color:var(--red)}
+.pn{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:40px}
+
+footer{background:var(--dark);color:var(--on-dark-2);padding:36px 0;font-size:.9rem}
+footer a{color:var(--on-dark)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-weight:700;z-index:99}
+.draft{background:var(--yellow);color:#141714;text-align:center;font-weight:700;font-size:.85rem;padding:6px 12px;border-bottom:2px solid #141714}
+.view{animation:in .5s var(--ease)}
+@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (max-width:760px){
+  .exam{grid-template-columns:84px 1fr;gap:14px;padding:14px}
+  .exam .go{display:none}
+  .date .d{font-size:2rem}
+  .gap{padding-left:40px}
+  .grid{grid-template-columns:1fr}
+  .res{position:static;order:-1}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="draft">Exam dates and times are not final yet</div>
+<header class="nav"><div class="wrap nav-in">
+  <a class="brand" href="#"><img src="https://wasiulbahar.com/favicon.svg" alt=""><span><b>Doomsday</b><span>3.2 Finals · one-stop</span></span></a>
+  <button class="icon-btn" id="theme" aria-label="Toggle dark mode">◐</button>
+</div></header>
+<main id="app"><div class="wrap band">Loading the routine…</div></main>
+<dialog id="viewer" class="card">
+  <div class="vbar"><h3></h3><a class="btn small yel open" target="_blank" rel="noopener">Open in Drive ↗</a><button class="icon-btn" onclick="this.closest('dialog').close()" aria-label="Close">✕</button></div>
+  <iframe title="Document preview" allow="autoplay"></iframe>
+</dialog>
+<footer><div class="wrap">Made for the batch by <a href="https://wasiulbahar.com">Wasiul Bahar</a>. Syllabus pulled live from the class sheet. Good luck. You'll survive.</div></footer>
+
+<script>
+const SHEET = '1cHUDhZ4e0HkL0mP-bdbcPEzczFKRam1uMuoO7k9-iWw';
+// ponytail: placeholder schedule + links until the sheet gets Date/Time/Link columns
+const EXTRA = {
+  'Financial Statement Analysis and Valuation': {date:'2026-12-13', time:'10:00', short:'FSAV'},
+  'Financial Technology': {date:'2026-12-14', time:'10:00', short:'FinTech'},
+  'Corporate Finance': {date:'2026-12-15', time:'10:00', short:'CF'},
+  'Public Finance': {date:'2026-12-17', time:'14:00', short:'PF'},
+  'Banking and Insurance': {date:'2026-12-20', time:'10:00', short:'B&I'},
+};
+const COLORS = ['#006a4e','#d42a33','#2f5bd3','#c26a00','#6b3fa0','#0f7d7d'];
+const $ = s => document.querySelector(s);
+const slug = s => s.toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const DAY = 864e5;
+let exams = [], timer;
+
+// theme toggle (per-viewer convenience)
+try { const t = localStorage.getItem('dd-theme'); if (t) document.documentElement.dataset.theme = t; } catch {}
+$('#theme').onclick = () => {
+  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const cur = document.documentElement.dataset.theme || (dark ? 'dark' : 'light');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('dd-theme', next); } catch {}
+};
+
+// The sheet's HTML view carries text AND the hyperlinks (gviz/CSV drop links).
+// credentials:'omit' so a signed-in Google account in the student's browser can't interfere.
+async function loadSheet() {
+  const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET}/htmlview/sheet?headers=true&gid=0`, {credentials: 'omit', cache: 'no-store'});
+  if (!res.ok) throw new Error('sheet ' + res.status);
+  const table = new DOMParser().parseFromString(await res.text(), 'text/html').querySelector('table');
+  if (!table) throw new Error('no table in sheet view');
+  // lay merged cells out on a grid; a merged cell sits only at its top-left slot
+  const grid = [], taken = [];
+  [...table.querySelectorAll('tr')].filter(tr => tr.querySelector('td')).forEach((tr, r) => {
+    grid[r] = grid[r] || []; taken[r] = taken[r] || [];
+    let c = 0;
+    for (const td of tr.querySelectorAll('td')) {
+      while (taken[r][c]) c++;
+      const rs = +td.rowSpan || 1, cs = +td.colSpan || 1, a = td.querySelector('a[href]');
+      grid[r][c] = {t: td.textContent.trim(), u: a ? unwrap(a.getAttribute('href')) : ''};
+      for (let i = 0; i < rs; i++) for (let j = 0; j < cs; j++) { (taken[r+i] = taken[r+i] || [])[c+j] = true; }
+      c += cs;
+    }
+  });
+  return grid;
+}
+function unwrap(h) { // google.com/url?q=REAL -> REAL
+  try { const u = new URL(h, 'https://www.google.com'); return u.hostname.endsWith('google.com') && u.pathname === '/url' ? u.searchParams.get('q') : u.href; } catch { return ''; }
+}
+
+let master = '';
+function parse(grid) {
+  const get = (row, i) => (row && row[i]) || {t: '', u: ''};
+  // find columns by header text, so inserted/moved columns in the sheet don't break the page
+  const findCol = re => { for (const row of grid.slice(0, 6)) for (let i = 0; i < (row || []).length; i++) if (re.test(get(row, i).t)) return i; return -1; };
+  const C = Math.max(0, findCol(/^course/i)), N = findCol(/chapter name/i) >= 0 ? findCol(/chapter name/i) : C + 3;
+  const mc = findCol(/master folder/i); if (mc >= 0) for (const row of grid.slice(0, 6)) if (/master folder/i.test(get(row, mc).t)) master = get(row, mc).u;
+  const out = []; let cur;
+  for (const row of grid) {
+    const v = i => get(row, i);
+    if (v(C).t && !/^course/i.test(v(C).t)) { cur = {name: v(C).t, folder: v(C).u, chapters: []}; out.push(cur); }
+    if (!cur) continue;
+    // materials cell (BOOK / Note / Comprehensive) anywhere right of the chapter name
+    for (let i = N + 1; i < (row || []).length; i++) {
+      const m = v(i), k = m.t.toLowerCase();
+      if (k === 'book' && !cur.book) cur.book = m.u || '';
+      if (k === 'note' && !cur.note) cur.note = m.u || '';
+      if (k === 'comprehensive' && !cur.comp) cur.comp = m.u || '';
+    }
+    const name = v(N).t;
+    if (!name || /chapter name/i.test(name)) continue;
+    if (!v(C + 1).t) cur.chapters.push({sub: name}); // divider row like "Banking starts"
+    else cur.chapters.push({n: v(C + 1).t, book: v(C + 2).t, bookUrl: v(C + 2).u || v(C + 1).u, name, url: v(N).u});
+  }
+  return out.filter(c => c.chapters.some(x => x.n));
+}
+
+function build(courses) {
+  exams = courses.map((c, i) => {
+    const x = EXTRA[c.name] || {date:'2026-12-31', time:'10:00'};
+    return {...c, ...x, id: slug(c.name), at: new Date(`${x.date}T${x.time}:00+06:00`)};
+  }).sort((a, b) => a.at - b.at);
+  exams.forEach((e, i) => { e.color = COLORS[i % COLORS.length]; e.prev = exams[i-1]; e.next = exams[i+1];
+    e.gap = e.prev ? Math.round((startOfDay(e.at) - startOfDay(e.prev.at)) / DAY) : null; });
+}
+const startOfDay = d => new Date(d.toLocaleDateString('en-CA', {timeZone:'Asia/Dhaka'}) + 'T00:00:00+06:00');
+const fmt = (d, o) => d.toLocaleString('en-GB', {timeZone:'Asia/Dhaka', ...o});
+const longDate = d => fmt(d, {weekday:'long', day:'numeric', month:'long'});
+const time = d => fmt(d, {hour:'numeric', minute:'2-digit', hour12:true});
+const upcoming = () => exams.find(e => e.at > Date.now());
+const gapText = g => g === 1 ? 'Back to back. 1 day' : `${g} days to breathe`;
+
+function clockHTML(cls = '') {
+  return `<div class="clock ${cls}">${['days','hours','mins','secs'].map(u => `<div class="unit"><span class="num" data-u="${u}">--</span><small>${u}</small></div>`).join('')}</div>`;
+}
+function startClock(target) {
+  clearInterval(timer);
+  const last = {};
+  const tick = () => {
+    let s = Math.max(0, Math.floor((target - Date.now()) / 1000));
+    const v = {days: Math.floor(s/86400), hours: Math.floor(s%86400/3600), mins: Math.floor(s%3600/60), secs: s%60};
+    document.querySelectorAll('.num[data-u]').forEach(el => {
+      const u = el.dataset.u, t = String(v[u]).padStart(2, '0');
+      if (el.textContent !== t) { el.textContent = t; if (last[u] !== undefined) { el.classList.remove('tick'); void el.offsetWidth; el.classList.add('tick'); } }
+      last[u] = t;
+    });
+    if (s === 0) route();
+  };
+  tick(); timer = setInterval(tick, 1000);
+}
+
+function home() {
+  const nx = upcoming(), done = exams.filter(e => e.at <= Date.now()).length;
+  const first = exams[0], last = exams.at(-1);
+  const hero = `
+    <p class="kick">3.2 · ${fmt(first.at,{day:'numeric',month:'short'})} – ${fmt(last.at,{day:'numeric',month:'short'})}</p>
+    <h1>Final exam <span class="mark red">routine &amp; syllabus</span></h1>
+    ${nx ? `<a class="card nextup" href="#${nx.id}">
+      <div class="nu-txt"><span class="kick">Next up · exam ${exams.indexOf(nx)+1} of ${exams.length}</span>
+        <b>${esc(nx.name)}</b><span class="nu-when">${longDate(nx.at)} · ${time(nx.at)}</span></div>
+      ${clockHTML('small')}</a>`
+    : `<div class="card nextup"><div class="nu-txt"><b>All exams done. You survived.</b><span class="nu-when">Go sleep.</span></div></div>`}`;
+  $('#app').innerHTML = `<div class="view">
+  <section class="hero"><div class="wrap">${hero}
+    <div class="survive"><div class="lbl"><span>Survival meter</span><span>${done} / ${exams.length} exams cleared</span></div>
+      <div class="bar"><i style="width:${Math.max(3, done/exams.length*100)}%"></i></div></div>
+    <div class="cta"><a class="btn yel" href="#routine">See the routine ↓</a>
+      <button class="btn ghost" id="ics">Add all to calendar</button>
+      ${master ? `<a class="btn ghost" href="${esc(master)}" target="_blank" rel="noopener">📂 Master folder ↗</a>` : ''}</div>
+  </div></section>
+  <section class="band tint" id="routine"><div class="wrap">
+    <div class="head"><h2>The <span class="mark">routine</span></h2><p>Tap a course for its syllabus, books, notes and the full folder.</p></div>
+    ${calStrip()}
+    <div class="track">${exams.map((e, i) => `
+      ${e.gap != null ? `<div class="gap ${e.gap <= 1 ? 'tight' : e.gap >= 3 ? 'easy' : ''}"><span class="chip">${gapText(e.gap)}</span></div>` : ''}
+      <a class="card exam ${e === nx ? 'next' : ''} ${e.at <= Date.now() ? 'done' : ''}" href="#${e.id}" style="--c:${e.color}">
+        <div class="date"><div class="m">${fmt(e.at,{month:'short'})}</div><div class="d">${fmt(e.at,{day:'numeric'})}</div><div class="w">${fmt(e.at,{weekday:'long'})}</div></div>
+        <div><h3>${esc(e.name)}</h3><div class="meta">
+          <span class="chip">⏰ ${time(e.at)}</span>
+          <span class="chip">${e.chapters.filter(c => c.n).length} chapters</span>
+          ${e === nx ? '<span class="chip" style="background:var(--red);color:#fff">Next</span>' : e.at <= Date.now() ? '<span class="chip">Done ✓</span>' : `<span class="chip">in ${Math.ceil((startOfDay(e.at) - startOfDay(new Date()))/DAY)} days</span>`}
+          ${progressChip(e)}
+        </div></div>
+        <span class="go" aria-hidden="true">→</span>
+      </a>`).join('')}</div>
+  </div></section></div>`;
+  $('#ics').onclick = () => ics(exams);
+  if (nx) startClock(nx.at);
+}
+
+function calStrip() {
+  const a = startOfDay(new Date(Math.max(Date.now(), +exams[0].at - 2*DAY))), b = startOfDay(exams.at(-1).at), today = +startOfDay(new Date());
+  const map = new Map(exams.map(e => [+startOfDay(e.at), e])), nx = upcoming();
+  let h = '';
+  for (let t = +a; t <= +b; t += DAY) {
+    const d = new Date(t), e = map.get(t);
+    const cls = ['day', e && 'ex', e && e === nx && 'next', t === today && 'today', t < today && 'past'].filter(Boolean).join(' ');
+    h += `<${e ? `a href="#${e.id}" title="${esc(e.name)}"` : 'div'} class="${cls}">${fmt(d,{weekday:'short'})}<b>${fmt(d,{day:'numeric'})}</b>${e ? esc(e.short || '') : fmt(d,{month:'short'})}</${e ? 'a' : 'div'}>`;
+  }
+  return `<div class="cal" aria-label="Calendar">${h}</div>`;
+}
+
+const doneKey = e => 'dd-done-' + e.id;
+function getDone(e) { try { return JSON.parse(localStorage.getItem(doneKey(e))) || []; } catch { return []; } }
+function progressChip(e) {
+  const total = e.chapters.filter(c => c.n).length, d = getDone(e).length;
+  return d ? `<span class="chip" style="background:var(--yellow);color:#141714">${d}/${total} studied</span>` : '';
+}
+
+function detail(e) {
+  const total = e.chapters.filter(c => c.n).length;
+  $('#app').innerHTML = `<div class="view">
+  <section class="dhero" style="--c:${e.color}"><div class="wrap">
+    <a class="back" href="#">← All exams</a>
+    <h1>${e.folder ? `<a href="${esc(e.folder)}" target="_blank" rel="noopener" title="Open the full course folder">${esc(e.name)}</a>` : esc(e.name)}</h1>
+    <div class="facts">
+      <div class="fact"><small>Date</small>${longDate(e.at)}</div>
+      <div class="fact"><small>Time</small>${time(e.at)}</div>
+      <div class="fact"><small>Exam</small>${exams.indexOf(e)+1} of ${exams.length}</div>
+      <div class="fact"><small>Gap before</small>${e.prev ? `${e.gap} day${e.gap === 1 ? '' : 's'} after ${esc(e.prev.short || e.prev.name)}` : 'First exam. No warm-up'}</div>
+    </div>
+    ${e.at > Date.now() ? clockHTML('mini') : '<p style="margin-top:20px;font-weight:700">This one is done ✓</p>'}
+  </div></section>
+  <section class="band"><div class="wrap grid">
+    <div class="card syl">
+      <div class="syl-top"><div><h2>Syllabus</h2><p style="color:var(--ink-2)">Tick chapters as you finish them. Saved on this device.</p></div>
+        <div class="ring" id="ring"><b id="pct">0%</b></div></div>
+      <ul>${e.chapters.map((c, i) => c.sub ? `<li class="sub">${esc(c.sub)}</li>` : `
+        <li class="ch"><input type="checkbox" data-i="${i}" aria-label="Mark ${esc(c.name)} as studied">
+          ${c.bookUrl ? `<a class="bk" href="${esc(c.bookUrl)}" data-pdf title="Book chapter ${esc(c.book || c.n)} PDF">Ch ${esc(c.book || '–')}</a>` : `<span class="bk">Ch ${esc(c.book || '–')}</span>`}
+          ${c.url ? `<a class="t" href="${esc(c.url)}" data-pdf>${esc(c.name)} <span class="pdf">PDF</span></a>` : `<span class="t">${esc(c.name)}</span>`}</li>`).join('')}</ul>
+    </div>
+    <div class="res">
+      ${resBtn(e.book, '📘 Book', '')}
+      ${resBtn(e.note, '📝 Standard note', 'red')}
+      ${resBtn(e.comp, '📚 Comprehensive note', 'red')}
+      ${e.folder ? `<a class="btn yel" href="${esc(e.folder)}" target="_blank" rel="noopener">📂 Full folder <span>↗</span></a>` : ''}
+      <button class="btn ghost" id="ics1">📅 Add to calendar</button>
+      <button class="btn ghost" id="share">🔗 Share this page</button>
+    </div>
+  </div>
+  <div class="wrap pn">
+    ${e.prev ? `<a class="btn ghost small" href="#${e.prev.id}">← ${esc(e.prev.name)}</a>` : '<span></span>'}
+    ${e.next ? `<a class="btn ghost small" href="#${e.next.id}">${esc(e.next.name)} →</a>` : ''}
+  </div></section></div>`;
+  const saved = new Set(getDone(e));
+  const paint = () => { const p = total ? Math.round(saved.size / total * 100) : 0; $('#ring').style.setProperty('--p', p); $('#pct').textContent = p + '%'; };
+  document.querySelectorAll('.ch input').forEach(cb => {
+    cb.checked = saved.has(+cb.dataset.i);
+    cb.onchange = () => { cb.checked ? saved.add(+cb.dataset.i) : saved.delete(+cb.dataset.i);
+      try { localStorage.setItem(doneKey(e), JSON.stringify([...saved])); } catch {}
+      paint(); if (saved.size === total && cb.checked) toast('Whole syllabus done. Legend.'); };
+  });
+  paint();
+  $('#ics1').onclick = () => ics([e]);
+  $('#share').onclick = async () => {
+    const url = location.href;
+    try { if (navigator.share) await navigator.share({title: e.name, url}); else { await navigator.clipboard.writeText(url); toast('Link copied'); } } catch {}
+  };
+  if (e.at > Date.now()) startClock(e.at);
+}
+
+const resBtn = (u, label, cls) => u
+  ? `<a class="btn ${cls}" href="${esc(u)}" data-pdf>${label} <span>↗</span></a>`
+  : `<span class="btn ghost off" title="Not added to the sheet yet">${label} <small>soon</small></span>`;
+
+// in-page viewer for Drive files and Google Docs; anything else opens in a new tab
+function previewUrl(u) {
+  const m = u.match(/^https:\/\/(drive|docs)\.google\.com\/(file|document|presentation|spreadsheets)\/d\/([\w-]+)/);
+  return m ? `https://${m[1]}.google.com/${m[2]}/d/${m[3]}/preview` : '';
+}
+document.addEventListener('click', ev => {
+  const a = ev.target.closest('a[data-pdf]');
+  if (!a || ev.ctrlKey || ev.metaKey || ev.shiftKey) return;
+  const src = previewUrl(a.href);
+  if (!src) { a.target = '_blank'; a.rel = 'noopener'; return; }
+  ev.preventDefault();
+  const d = $('#viewer');
+  d.querySelector('h3').textContent = a.title || a.textContent.replace(/\s*(PDF|↗)\s*$/, '').trim();
+  d.querySelector('iframe').src = src;
+  d.querySelector('.open').href = a.href;
+  d.showModal();
+});
+
+function ics(list) {
+  const z = d => d.toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
+  const ev = list.map(e => `BEGIN:VEVENT\r\nUID:${e.id}@doomsday\r\nDTSTAMP:${z(new Date())}\r\nDTSTART:${z(e.at)}\r\nDTEND:${z(new Date(+e.at + 3*36e5))}\r\nSUMMARY:Final: ${e.name}\r\nURL:${location.origin}${location.pathname}#${e.id}\r\nBEGIN:VALARM\r\nTRIGGER:-P1D\r\nACTION:DISPLAY\r\nDESCRIPTION:Exam tomorrow\r\nEND:VALARM\r\nEND:VEVENT`).join('\r\n');
+  const blob = new Blob([`BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Doomsday//EN\r\n${ev}\r\nEND:VCALENDAR`], {type:'text/calendar'});
+  const a = Object.assign(document.createElement('a'), {href: URL.createObjectURL(blob), download: list.length > 1 ? 'finals.ics' : `${list[0].id}.ics`});
+  a.click(); URL.revokeObjectURL(a.href);
+}
+
+function toast(t) { const el = Object.assign(document.createElement('div'), {className:'toast', textContent:t}); document.body.appendChild(el); setTimeout(() => el.remove(), 2200); }
+
+function route() {
+  const e = exams.find(x => x.id === location.hash.slice(1));
+  e ? detail(e) : home();
+  window.scrollTo(0, 0);
+}
+addEventListener('hashchange', route);
+
+loadSheet().then(r => {
+  build(parse(r));
+  if (!exams.length) return $('#app').innerHTML = '<div class="wrap band">The class sheet loaded but no courses were found. Check that the Mid tab still has the "Course" and "Chapter Name" headers.</div>';
+  route();
+})
+  .catch(err => { console.error(err); $('#app').innerHTML = '<div class="wrap band">Could not load the class sheet. Check your connection and refresh.</div>'; });
+</script>
+</body>
+</html>

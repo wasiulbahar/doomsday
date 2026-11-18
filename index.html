@@ -68,6 +68,8 @@ h1,h2,h3{font-weight:800;letter-spacing:-.03em;line-height:1.05}
 .num.tick{animation:tick .35s var(--ease)}
 @keyframes tick{from{transform:translateY(-30%);opacity:0}to{transform:none;opacity:1}}
 .quip{margin-top:20px;color:var(--on-dark-2)}
+.today{margin-top:14px;font-size:clamp(1.6rem,1.2rem + 2vw,2.4rem);font-weight:800;letter-spacing:-.02em;color:var(--yellow)}
+.exam p .dow{color:var(--ink);font-weight:700}
 
 /* progress road */
 .road{display:flex;justify-content:space-between;position:relative;margin-top:clamp(40px,6vw,56px);max-width:520px}
@@ -90,8 +92,9 @@ h1,h2,h3{font-weight:800;letter-spacing:-.03em;line-height:1.05}
 .exam:hover{transform:translate(-2px,-2px);border-color:var(--line);box-shadow:5px 5px 0 var(--shade)}
 .exam.is-next{border-color:var(--line);box-shadow:5px 5px 0 var(--red)}
 .exam.done{opacity:.5}
-.date{text-align:center;border-radius:14px;background:var(--c);color:#fff;padding:8px 0 9px;line-height:1.1}
-.date b{display:block;font-size:1.9rem;letter-spacing:-.04em}
+.date{text-align:center;border-radius:14px;background:var(--c);color:#fff;padding:7px 0 8px;line-height:1.1}
+.date b{display:block;font-size:1.9rem;letter-spacing:-.04em;margin:1px 0}
+.date span{display:block}
 .date span{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;opacity:.9}
 .exam h3{font-size:clamp(1.15rem,1rem + .7vw,1.4rem);letter-spacing:-.02em;font-weight:700;line-height:1.2}
 .exam p{color:var(--ink-2);font-size:.95rem;margin-top:4px}
@@ -170,7 +173,6 @@ footer{color:var(--ink-2);padding:8px 0 56px;font-size:.92rem;text-align:center}
 </style>
 </head>
 <body>
-<div class="notice">Exam dates and times are not final yet</div>
 <header class="nav"><div class="wrap nav-in">
   <a class="brand" href="#"><img src="https://wasiulbahar.com/favicon.svg" alt="">Doomsday</a>
   <button class="icon-btn" id="theme" aria-label="Toggle dark mode">◐</button>
@@ -184,14 +186,24 @@ footer{color:var(--ink-2);padding:8px 0 56px;font-size:.92rem;text-align:center}
 
 <script>
 const SHEET = '1cHUDhZ4e0HkL0mP-bdbcPEzczFKRam1uMuoO7k9-iWw';
-// ponytail: placeholder schedule + links until the sheet gets Date/Time/Link columns
-const EXTRA = {
-  'Financial Statement Analysis and Valuation': {date:'2026-12-13', time:'10:00', short:'FSAV'},
-  'Financial Technology': {date:'2026-12-14', time:'10:00', short:'FinTech'},
-  'Corporate Finance': {date:'2026-12-15', time:'10:00', short:'CF'},
-  'Public Finance': {date:'2026-12-17', time:'14:00', short:'PF'},
-  'Banking and Insurance': {date:'2026-12-20', time:'10:00', short:'B&I'},
+// exam dates come from the sheet; only the short labels live here
+const SHORT = {
+  'Financial Statement Analysis and Valuation': 'FSAV', 'Financial Technology': 'FinTech',
+  'Corporate Finance': 'CF', 'Public Finance': 'PF', 'Banking and Insurance': 'B&I',
 };
+const EXAM_HOUR = 9, EXAM_LEN = 3; // every exam starts at 9:00 am (Dhaka); ~3 h long
+const MONTHS = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+// "30 November, 2026" / "November 30, 2026" / "30/11/2026" -> Date at 00:00 Dhaka, else null
+function parseDate(t) {
+  let d, m, y, x;
+  if ((x = t.match(/^(\d{1,2})(?:st|nd|rd|th)?\s+([a-z]+)\.?,?\s+(\d{4})$/i))) [, d, m, y] = x;
+  else if ((x = t.match(/^([a-z]+)\.?\s+(\d{1,2})(?:st|nd|rd|th)?,?\s+(\d{4})$/i))) [, m, d, y] = x;
+  else if ((x = t.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/))) { [, d, m, y] = x; m = +m; }
+  else return null;
+  if (typeof m === 'string') m = MONTHS.indexOf(m.slice(0, 3).toLowerCase()) + 1;
+  if (!(m >= 1 && m <= 12 && d >= 1 && d <= 31)) return null;
+  return new Date(`${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}T00:00:00+06:00`);
+}
 const COLORS = ['#006a4e','#d42a33','#2f5bd3','#c26a00','#6b3fa0','#0f7d7d'];
 const $ = s => document.querySelector(s);
 const slug = s => s.toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
@@ -245,38 +257,47 @@ function parse(grid) {
   const out = []; let cur;
   for (const row of grid) {
     const v = i => get(row, i);
-    if (v(C).t && !/^course/i.test(v(C).t)) { cur = {name: v(C).t, folder: v(C).u, chapters: []}; out.push(cur); }
+    if (v(C).t && !/^course/i.test(v(C).t)) {
+      cur = {name: v(C).t, folder: v(C).u, chapters: [], date: null}; out.push(cur);
+      // exam date: any date-looking cell on the course's first row
+      for (let i = 0; i < (row || []).length && !cur.date; i++) if (i !== C) cur.date = parseDate(v(i).t);
+    }
     if (!cur) continue;
-    // materials cell (BOOK / Note / Comprehensive) anywhere right of the chapter name
+    // cells right of the chapter name: materials (BOOK / Note / Comprehensive) and CFA chapter links
+    let cfa = '';
     for (let i = N + 1; i < (row || []).length; i++) {
       const m = v(i), k = m.t.toLowerCase();
       if (k === 'book' && !cur.book) cur.book = m.u || '';
       if (k === 'note' && !cur.note) cur.note = m.u || '';
       if (k === 'comprehensive' && !cur.comp) cur.comp = m.u || '';
+      if (/^cfa\b/.test(k) && m.u) cfa = m.u;
     }
     const name = v(N).t;
     if (!name || /chapter name/i.test(name)) continue;
-    if (!v(C + 1).t) cur.chapters.push({sub: name}); // divider row like "Banking starts"
-    else cur.chapters.push({n: v(C + 1).t, book: v(C + 2).t, bookUrl: v(C + 2).u || v(C + 1).u, name, url: v(N).u});
+    if (!v(C + 1).t) cur.chapters.push({sub: name}); // divider row like "Supporting Resources"
+    else cur.chapters.push({n: v(C + 1).t, book: v(C + 2).t, bookUrl: v(C + 2).u || v(C + 1).u, cfaUrl: cfa, name, url: v(N).u});
   }
   return out.filter(c => c.chapters.some(x => x.n));
 }
 
 function build(courses) {
-  exams = courses.map((c, i) => {
-    const x = EXTRA[c.name] || {date:'2026-12-31', time:'10:00'};
-    return {...c, ...x, id: slug(c.name), at: new Date(`${x.date}T${x.time}:00+06:00`)};
-  }).sort((a, b) => a.at - b.at);
+  // courses without a date go last and show "date not announced"
+  exams = courses.map(c => ({...c, short: SHORT[c.name] || c.name.split(/\s+/).map(w => w[0]).join('').toUpperCase(),
+    id: slug(c.name), tba: !c.date, at: c.date ? new Date(+c.date + EXAM_HOUR * 36e5) : new Date('2999-01-01T00:00:00+06:00')}))
+    .sort((a, b) => a.at - b.at);
   exams.forEach((e, i) => { e.color = COLORS[i % COLORS.length]; e.prev = exams[i-1]; e.next = exams[i+1];
-    e.gap = e.prev ? Math.round((startOfDay(e.at) - startOfDay(e.prev.at)) / DAY) : null; });
+    e.gap = e.prev && !e.tba && !e.prev.tba ? Math.round((e.at - e.prev.at) / DAY) : null; });
 }
 const startOfDay = d => new Date(d.toLocaleDateString('en-CA', {timeZone:'Asia/Dhaka'}) + 'T00:00:00+06:00');
 const fmt = (d, o) => d.toLocaleString('en-GB', {timeZone:'Asia/Dhaka', ...o});
-const longDate = d => fmt(d, {weekday:'long', day:'numeric', month:'long'});
 const time = d => fmt(d, {hour:'numeric', minute:'2-digit', hour12:true});
-const upcoming = () => exams.find(e => e.at > Date.now());
+const longDate = e => e.tba ? 'Date not announced yet' : `${fmt(e.at, {weekday:'long', day:'numeric', month:'long', year:'numeric'})} · ${time(e.at)}`;
+const isDone = e => !e.tba && Date.now() >= +e.at + EXAM_LEN * 36e5;   // exam is over
+const isToday = e => !e.tba && Date.now() >= +e.at && !isDone(e);      // exam is happening now
+const upcoming = () => exams.find(e => !e.tba && !isDone(e));
 const gapText = g => g <= 1 ? '😮‍💨 Back to back, no break' : g === 2 ? '☕ 1 free day in between' : `🌿 ${g - 1} free days in between`;
-const daysTo = e => Math.ceil((startOfDay(e.at) - startOfDay(new Date())) / DAY);
+const daysTo = e => Math.round((startOfDay(e.at) - startOfDay(new Date())) / DAY);
+const whenLeft = e => e.tba ? 'Date to be announced' : isDone(e) ? 'Done ✓' : isToday(e) ? 'Happening now. Good luck 🍀' : daysTo(e) === 0 ? 'Today' : daysTo(e) === 1 ? 'Tomorrow' : `in ${daysTo(e)} days`;
 const QUIPS = ['One chapter at a time.', 'Coffee is a study material.', 'Future you says thanks.', 'Small steps still count.', 'You have done harder things.'];
 const chCount = e => e.chapters.filter(c => c.n).length;
 function startClock(target) {
@@ -296,18 +317,20 @@ function startClock(target) {
 }
 
 function home() {
-  const nx = upcoming(), first = exams[0], last = exams.at(-1);
+  const nx = upcoming(), dated = exams.filter(e => !e.tba);
   const units = [['days','days'],['hours','hrs'],['mins','min'],['secs','sec']];
+  const range = dated.length ? ` · ${fmt(dated[0].at,{day:'numeric',month:'short'})} – ${fmt(dated.at(-1).at,{day:'numeric',month:'short'})}` : '';
   $('#app').innerHTML = `<div class="view">
   <section class="hero"><div class="wrap">
-    <p class="kick">3.2 · ${fmt(first.at,{day:'numeric',month:'short'})} – ${fmt(last.at,{day:'numeric',month:'short'})}</p>
+    <p class="kick">3.2${range}</p>
     <h1>Final exam <span class="mark">routine &amp; syllabus</span></h1>
     ${nx ? `<div class="next">
-      <p class="next-lbl">Next up: <a href="#${nx.id}">${esc(nx.name)}</a> · ${fmt(nx.at,{weekday:'short', day:'numeric', month:'short'})}, ${time(nx.at)}</p>
-      <div class="count">${units.map(([u, l]) => `<div><span class="num" data-u="${u}">--</span><small>${l}</small></div>`).join('')}</div>
-      <p class="quip">${QUIPS[Math.floor(Math.random() * QUIPS.length)]}</p></div>`
-    : `<div class="next"><p class="next-lbl" style="font-size:1.3rem">All exams done. You survived 🎉</p></div>`}
-    <nav class="road" aria-label="Exam progress">${exams.map((e, i) => `<a class="stop ${e.at <= Date.now() ? 'done' : e === nx ? 'now' : ''}" href="#${e.id}" title="${esc(e.name)}"><i>${e.at <= Date.now() ? '✓' : i + 1}</i>${esc(e.short || '')}</a>`).join('')}</nav>
+      <p class="next-lbl">Next up: <a href="#${nx.id}">${esc(nx.name)}</a> · ${fmt(nx.at,{weekday:'long', day:'numeric', month:'long'})}, ${time(nx.at)}</p>
+      ${isToday(nx) ? `<p class="today">Exam in progress. Good luck! 🍀</p>`
+      : `<div class="count">${units.map(([u, l]) => `<div><span class="num" data-u="${u}">--</span><small>${l}</small></div>`).join('')}</div>
+      <p class="quip">${QUIPS[Math.floor(Math.random() * QUIPS.length)]}</p>`}</div>`
+    : dated.length === exams.length ? `<div class="next"><p class="today">All exams done. You survived 🎉</p></div>` : ''}
+    <nav class="road" aria-label="Exam progress">${exams.map((e, i) => `<a class="stop ${isDone(e) ? 'done' : e === nx ? 'now' : ''}" href="#${e.id}" title="${esc(e.name)}"><i>${isDone(e) ? '✓' : i + 1}</i>${esc(e.short)}</a>`).join('')}</nav>
     <div class="links"><button class="pill" id="ics">📅 Add all to calendar</button>
       ${master ? `<a class="pill" href="${esc(master)}" target="_blank" rel="noopener">📂 Master folder</a>` : ''}</div>
   </div></section>
@@ -316,15 +339,15 @@ function home() {
     <p class="sub-h">Tap a course for its syllabus, chapter PDFs, books and notes.</p>
     <div class="list">${exams.map(e => `
       ${e.gap != null ? `<div class="gap ${e.gap <= 1 ? 'tight' : ''}"><span>${gapText(e.gap)}</span></div>` : ''}
-      <a class="exam ${e === nx ? 'is-next' : ''} ${e.at <= Date.now() ? 'done' : ''}" href="#${e.id}" style="--c:${e.color}">
-        <div class="date"><b>${fmt(e.at,{day:'numeric'})}</b><span>${fmt(e.at,{month:'short'})}</span></div>
+      <a class="exam ${e === nx ? 'is-next' : ''} ${isDone(e) ? 'done' : ''}" href="#${e.id}" style="--c:${e.color}">
+        <div class="date">${e.tba ? '<b>?</b><span>TBA</span>' : `<span>${fmt(e.at,{weekday:'short'})}</span><b>${fmt(e.at,{day:'numeric'})}</b><span>${fmt(e.at,{month:'short'})}</span>`}</div>
         <div><h3>${esc(e.name)}${e === nx ? '<span class="tag">Next</span>' : ''}</h3>
-          <p>${fmt(e.at,{weekday:'long'})}, ${time(e.at)} · ${e.at <= Date.now() ? 'Done ✓' : `in ${daysTo(e)} days`}${studied(e)}</p></div>
+          <p>${e.tba ? '' : `<b class="dow">${fmt(e.at,{weekday:'long'})}</b>, ${time(e.at)} · `}${whenLeft(e)}${studied(e)}</p></div>
         <span class="arrow" aria-hidden="true">→</span>
       </a>`).join('')}</div>
   </div></section></div>`;
   $('#ics').onclick = () => ics(exams);
-  if (nx) startClock(nx.at);
+  if (nx && !isToday(nx)) startClock(nx.at);
 }
 
 const doneKey = e => 'dd-done-' + e.id;
@@ -333,14 +356,15 @@ function studied(e) { const d = getDone(e).length; return d ? ` · ${d}/${chCoun
 
 function detail(e) {
   const total = chCount(e);
-  const gapLine = e.prev ? (e.gap <= 1 ? `Right after ${esc(e.prev.short || e.prev.name)}, no break` : `${e.gap - 1} free day${e.gap === 2 ? '' : 's'} after ${esc(e.prev.short || e.prev.name)}`) : 'The first exam';
+  const gapLine = e.gap == null ? (e.prev ? '' : ' · The first exam') : ' · ' + (e.gap <= 1 ? `Right after ${esc(e.prev.short)}, no break` : `${e.gap - 1} free day${e.gap === 2 ? '' : 's'} after ${esc(e.prev.short)}`);
   $('#app').innerHTML = `<div class="view">
   <section class="dhero" style="--c:${e.color}"><div class="wrap">
     <a class="back" href="#">← All exams</a>
     <h1>${e.folder ? `<a href="${esc(e.folder)}" target="_blank" rel="noopener" title="Open the full course folder">${esc(e.name)}</a>` : esc(e.name)}</h1>
-    <p class="when">${longDate(e.at)} · ${time(e.at)}</p>
-    <p class="more">Exam ${exams.indexOf(e)+1} of ${exams.length} · ${gapLine}</p>
-    ${e.at > Date.now() ? `<div class="left">⏳ ${[['days','d'],['hours','h'],['mins','m'],['secs','s']].map(([u, l]) => `<span class="num" data-u="${u}">--</span><small>${l}</small>`).join('')} left</div>` : '<div class="left">Done ✓</div>'}
+    <p class="when">${longDate(e)}</p>
+    <p class="more">Exam ${exams.indexOf(e)+1} of ${exams.length}${gapLine}</p>
+    ${e.tba ? '' : isDone(e) || isToday(e) ? `<div class="left">${whenLeft(e)}</div>`
+      : `<div class="left">⏳ ${[['days','d'],['hours','h'],['mins','m'],['secs','s']].map(([u, l]) => `<span class="num" data-u="${u}">--</span><small>${l}</small>`).join('')} left</div>`}
   </div></section>
   <section class="sec"><div class="wrap">
     <h2 class="sm">Study materials</h2>
@@ -359,7 +383,7 @@ function detail(e) {
       <ul>${e.chapters.map((c, i) => c.sub ? `<li class="divider">${esc(c.sub)}</li>` : `
         <li class="ch"><input type="checkbox" data-i="${i}" aria-label="Mark ${esc(c.name)} as studied">
           <div>${c.url ? `<a class="t" href="${esc(c.url)}" data-pdf>${esc(c.name)}</a>` : `<span class="t">${esc(c.name)}</span>`}
-            <div class="meta"><span>Book chapter ${esc(c.book || '–')}</span>${c.bookUrl ? `<a href="${esc(c.bookUrl)}" data-pdf title="Book chapter ${esc(c.book || c.n)}">Read book chapter</a>` : ''}</div></div></li>`).join('')}</ul>
+            ${c.book || c.bookUrl || c.cfaUrl ? `<div class="meta">${c.book ? `<span>Book chapter ${esc(c.book)}</span>` : ''}${c.bookUrl ? `<a href="${esc(c.bookUrl)}" data-pdf title="Book chapter ${esc(c.book || c.n)}">Read book chapter</a>` : ''}${c.cfaUrl ? `<a href="${esc(c.cfaUrl)}" data-pdf title="CFA chapter: ${esc(c.name)}">Read CFA chapter</a>` : ''}</div>` : ''}</div></li>`).join('')}</ul>
     </div>
 
     <div class="pn">
@@ -385,7 +409,7 @@ function detail(e) {
     const url = location.href;
     try { if (navigator.share) await navigator.share({title: e.name, url}); else { await navigator.clipboard.writeText(url); toast('Link copied'); } } catch {}
   };
-  if (e.at > Date.now()) startClock(e.at);
+  if (!e.tba && Date.now() < e.at) startClock(e.at);
 }
 
 const mat = (u, ic, label, sub) => u
@@ -412,7 +436,10 @@ document.addEventListener('click', ev => {
 
 function ics(list) {
   const z = d => d.toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
-  const ev = list.map(e => `BEGIN:VEVENT\r\nUID:${e.id}@doomsday\r\nDTSTAMP:${z(new Date())}\r\nDTSTART:${z(e.at)}\r\nDTEND:${z(new Date(+e.at + 3*36e5))}\r\nSUMMARY:Final: ${e.name}\r\nURL:${location.origin}${location.pathname}#${e.id}\r\nBEGIN:VALARM\r\nTRIGGER:-P1D\r\nACTION:DISPLAY\r\nDESCRIPTION:Exam tomorrow\r\nEND:VALARM\r\nEND:VEVENT`).join('\r\n');
+  list = list.filter(e => !e.tba);
+  if (!list.length) return toast('No exam date yet');
+  // reminder at 6 pm the evening before (15 h before a 9 am start)
+  const ev = list.map(e => `BEGIN:VEVENT\r\nUID:${e.id}@doomsday\r\nDTSTAMP:${z(new Date())}\r\nDTSTART:${z(e.at)}\r\nDTEND:${z(new Date(+e.at + EXAM_LEN * 36e5))}\r\nSUMMARY:Final: ${e.name}\r\nURL:${location.origin}${location.pathname}#${e.id}\r\nBEGIN:VALARM\r\nTRIGGER:-PT15H\r\nACTION:DISPLAY\r\nDESCRIPTION:Exam tomorrow at 9 am\r\nEND:VALARM\r\nEND:VEVENT`).join('\r\n');
   const blob = new Blob([`BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Doomsday//EN\r\n${ev}\r\nEND:VCALENDAR`], {type:'text/calendar'});
   const a = Object.assign(document.createElement('a'), {href: URL.createObjectURL(blob), download: list.length > 1 ? 'finals.ics' : `${list[0].id}.ics`});
   a.click(); URL.revokeObjectURL(a.href);
